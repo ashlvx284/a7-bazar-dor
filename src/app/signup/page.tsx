@@ -1,138 +1,105 @@
 'use client';
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import toast, { Toaster } from 'react-hot-toast';
+import Navbar from '@/app/components/Navbar';
+import CatagoriesNav from '@/app/components/CatagoriesNav';
+import PriceTicker from '@/app/components/PriceTicker';
+import Footer from '@/app/components/Footer';
+import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 export default function SignUpPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.password) {
-      toast.error('সবগুলো ঘর পূরণ করুন');
-      return;
-    }
-    if (formData.password !== formData.confirmPassword) {
-      toast.error('পাসওয়ার্ড মিলছে না');
+    if (!name || !email || !password) {
+      toast.error('দয়া করে সব তথ্য পূরণ করুন');
       return;
     }
 
-    // লোকাল স্টোরেজে ইউজার ডাটা সেভ রাখা যাতে পরে সাইন ইন পেজে রিডাইরেক্ট করা যায়
-    localStorage.setItem('hasAccount', 'true');
-    localStorage.setItem('userEmail', formData.email);
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userEmail', email);
 
-    // সফলভাবে সাইন আপ হওয়ার টোস্ট
-    toast.success('আপনার একাউন্ট টি তৈরি হয়েছে।', {
-      style: {
-        border: '1px solid #10B981',
-        padding: '12px 16px',
-        color: '#065F46',
-        backgroundColor: '#ECFDF5',
-        fontWeight: 'bold',
-      },
-      iconTheme: {
-        primary: '#10B981',
-        secondary: '#FF0000',
-      },
-    });
+    toast.success('একাউন্ট সফলভাবে তৈরি হয়েছে!');
 
     setTimeout(() => {
-      router.push('/signin');
-    }, 1500);
+      router.push('/');
+    }, 1000);
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 flex flex-col justify-center items-center px-4 py-8">
-      <Toaster position="top-center" />
-      <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">অ্যাকাউন্ট তৈরি করুন</h1>
-        <p className="text-xs text-gray-500 mt-1">
-          বিনা খরচে সাইন আপ করে সব বিস্তারিত দাম দেখুন।
-        </p>
-      </div>
-
-      <div className="w-full max-w-md bg-white/70 backdrop-blur-md p-8 rounded-2xl border border-gray-200 shadow-sm">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1">নাম</label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1">ইমেইল</label>
-            <input
-              type="email"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1">পাসওয়ার্ড</label>
-            <input
-              type="password"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1">পাসওয়ার্ড নিশ্চিত করুন</label>
-            <input
-              type="password"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              value={formData.confirmPassword}
-              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2.5 rounded-lg text-sm transition mt-2"
-          >
-            সাইন আপ
-          </button>
-        </form>
-
-        <div className="relative my-6 text-center">
-          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
-          <span className="relative bg-white/70 px-2 text-xs text-gray-400">অথবা</span>
+    <main className="min-h-screen bg-gray-100 flex flex-col justify-between">
+      <div>
+        {/* Sticky Header Wrapper */}
+        <div className="sticky top-0 z-40 bg-gray-100 shadow-sm">
+          <Navbar />
+          <CatagoriesNav activeCat="" onSelectCategory={() => {}} />
+          <PriceTicker />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <button className="flex items-center justify-center gap-1.5 border border-gray-300 bg-white py-2 px-3 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-50">
-            <span>🌐</span> Google দিয়ে চালিয়ে যান
-          </button>
-          <button className="flex items-center justify-center gap-1.5 border border-gray-300 bg-white py-2 px-3 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-50">
-            <span>🐙</span> GitHub দিয়ে চালিয়ে যান
-          </button>
-        </div>
+        {/* Sign Up Form */}
+        <div className="max-w-md mx-auto mt-12 bg-white p-8 rounded-2xl border border-gray-200 shadow-sm">
+          <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">নতুন একাউন্ট খুলুন</h1>
+          
+          <form onSubmit={handleSignUp} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-gray-600 mb-1">আপনার নাম</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="আপনার নাম লিখুন"
+                className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-emerald-600"
+                required
+              />
+            </div>
 
-        <p className="text-center text-xs text-gray-600 mt-6">
-          অ্যাকাউন্ট আছে?{' '}
-          <Link href="/signin" className="text-emerald-700 font-bold hover:underline">
-            সাইন ইন করুন
-          </Link>
-        </p>
+            <div>
+              <label className="block text-xs font-semibold text-gray-600 mb-1">ইমেইল ঠিকানা</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="example@gmail.com"
+                className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-emerald-600"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-600 mb-1">পাসওয়ার্ড</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-emerald-600"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition text-sm cursor-pointer mt-2"
+            >
+              সাইন আপ
+            </button>
+          </form>
+
+          <p className="text-xs text-center text-gray-500 mt-6">
+            ইতিমধ্যে একাউন্ট আছে?{' '}
+            <Link href="/signin" className="text-emerald-600 font-semibold hover:underline">
+              সাইন ইন করুন
+            </Link>
+          </p>
+        </div>
       </div>
 
-      <Link href="/" className="text-xs text-gray-500 mt-6 hover:underline flex items-center gap-1">
-        ← হোম পেজে ফিরে যান
-      </Link>
+      <Footer />
     </main>
   );
 }

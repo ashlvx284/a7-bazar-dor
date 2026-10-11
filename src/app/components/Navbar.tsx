@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export default function Navbar() {
   const router = useRouter();
@@ -21,8 +22,13 @@ export default function Navbar() {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userEmail');
     setIsLoggedIn(false);
-    router.push('/');
-    window.location.reload();
+
+    toast.success('সফলভাবে লগআউট করা হয়েছে!');
+
+    setTimeout(() => {
+      router.push('/');
+      window.location.reload();
+    }, 1000);
   };
 
   return (
@@ -35,9 +41,7 @@ export default function Navbar() {
           </div>
           <div>
             <span className="text-2xl font-bold text-gray-900 tracking-tight block">বাজার দর</span>
-            <span className="text-xs text-gray-500 font-medium">
-  {new Intl.DateTimeFormat('bn-BD', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date())}
-</span>
+            <span className="text-xs text-gray-500 font-medium">রবিবার, ১১ অক্টোবর, ২০২৬</span>
           </div>
         </Link>
 
