@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import CatagoriesNav from './components/CatagoriesNav';
+import PriceTicker from './components/PriceTicker';
 
 interface Product {
   id: number | string;
@@ -17,7 +18,6 @@ interface Product {
 }
 
 export default function Home() {
-  // Initially no category selected
   const [activeCat, setActiveCat] = useState<string>(''); 
   const [catName, setCatName] = useState<string>('');
   const [catIcon, setCatIcon] = useState<string>('');
@@ -26,12 +26,11 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
   const [sortOption, setSortOption] = useState<string>('default');
 
-  // Dynamic Category API Fetching only when activeCat is selected
   useEffect(() => {
     if (!activeCat) return;
 
     setLoading(true);
-    fetch(`https://api.abcz.workers.dev/api/bazardor/products?category=${activeCat}`)
+    fetch(`https://openapi.programming-hero.com/api/bazardor/products?category=${activeCat}`)
       .then((res) => res.json())
       .then((data) => {
         const list = Array.isArray(data) ? data : data.products || data.data || [];
@@ -44,14 +43,12 @@ export default function Home() {
       });
   }, [activeCat]);
 
-  // Category Selection Handler
   const handleSelectCategory = (catId: string, name: string, icon: string) => {
     setActiveCat(catId);
     setCatName(name);
     setCatIcon(icon);
   };
 
-  // Sorting Logic
   const getSortedProducts = () => {
     const sorted = [...products];
     if (sortOption === 'lowToHigh') {
@@ -67,11 +64,12 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-100 pb-16">
       <Navbar />
+      {/* Category Nav-এর নিচে Price Ticker বসানো হয়েছে */}
       <CatagoriesNav activeCat={activeCat} onSelectCategory={handleSelectCategory} />
+      <PriceTicker />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         {!activeCat ? (
-          // Initial view when no category is clicked yet
           <div className="bg-white p-12 rounded-2xl border border-gray-200 text-center shadow-sm">
             <div className="text-5xl mb-3">🛒</div>
             <h2 className="text-xl font-bold text-gray-800">কোনো ক্যাটাগরি নির্বাচিত হয়নি</h2>
@@ -81,7 +79,6 @@ export default function Home() {
           </div>
         ) : (
           <>
-            {/* Active Category Header Banner */}
             <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-4 mb-6">
               <div className="text-4xl">{catIcon}</div>
               <div>
@@ -92,7 +89,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Sorting Dropdown */}
             <div className="flex items-center justify-between mb-4">
               <p className="text-sm font-medium text-gray-600">
                 মোট {sortedProducts.length}টি পণ্য দেখানো হচ্ছে
@@ -112,7 +108,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Product Grid */}
             {loading ? (
               <div className="text-center py-12 text-gray-500 font-medium">
                 পণ্য লোড হচ্ছে...
