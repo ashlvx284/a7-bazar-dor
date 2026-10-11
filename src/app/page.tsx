@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Navbar from './components/Navbar';
 import CatagoriesNav from './components/CatagoriesNav';
 import PriceTicker from './components/PriceTicker';
@@ -22,6 +23,8 @@ interface Product {
 }
 
 export default function Home() {
+  const router = useRouter();
+
   const [activeCat, setActiveCat] = useState<string>(''); 
   const [catName, setCatName] = useState<string>('');
   const [catIcon, setCatIcon] = useState<string>('');
@@ -59,6 +62,18 @@ export default function Home() {
         setLoading(false);
       });
   }, [activeCat]);
+
+  const handleProductClick = (productId: number | string) => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+    if (isLoggedIn === 'true') {
+      router.push(`/product/${productId}`);
+    } else {
+      // product id ta store kore rakhchi jate signin sesh e ekhane fire asa jay
+      localStorage.setItem('redirectProductId', String(productId));
+      router.push('/signin');
+    }
+  };
 
   const handleSelectCategory = (catId: string, name: string, icon: string) => {
     setActiveCat(catId);
@@ -116,7 +131,8 @@ export default function Home() {
                     return (
                       <div
                         key={prod.id || idx}
-                        className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center hover:border-red-300 transition"
+                        onClick={() => handleProductClick(prod.id)}
+                        className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center hover:border-red-300 transition cursor-pointer"
                       >
                         <div>
                           <div className="flex items-center gap-2">
@@ -157,7 +173,8 @@ export default function Home() {
                     return (
                       <div
                         key={prod.id || idx}
-                        className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center hover:border-emerald-300 transition"
+                        onClick={() => handleProductClick(prod.id)}
+                        className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center hover:border-emerald-300 transition cursor-pointer"
                       >
                         <div>
                           <div className="flex items-center gap-2">
@@ -198,7 +215,8 @@ export default function Home() {
                     return (
                       <div
                         key={prod.id || idx}
-                        className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center hover:border-emerald-300 transition"
+                        onClick={() => handleProductClick(prod.id)}
+                        className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center hover:border-emerald-300 transition cursor-pointer"
                       >
                         <div>
                           <div className="flex items-center gap-2">
@@ -253,7 +271,7 @@ export default function Home() {
               </p>
 
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500">সাজان</span>
+                <span className="text-sm text-gray-500">সাজান</span>
                 <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value)}
@@ -287,7 +305,8 @@ export default function Home() {
                   return (
                     <div
                       key={prod.id || idx}
-                      className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center hover:border-emerald-300 transition"
+                      onClick={() => handleProductClick(prod.id)}
+                      className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center hover:border-emerald-300 transition cursor-pointer"
                     >
                       <div>
                         <div className="flex items-center gap-2">
