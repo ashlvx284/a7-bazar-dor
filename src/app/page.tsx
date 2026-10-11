@@ -31,7 +31,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
   const [sortOption, setSortOption] = useState<string>('default');
 
-  // হোম পেজের জন্য সব পণ্য ফেচ করা যাতে "দাম বেড়েছে" ও "দাম কমেছে" সেকশনগুলো দেখানো যায়
+  // হোম পেজের জন্য সব পণ্য ফেচ করা
   useEffect(() => {
     fetch('https://openapi.programming-hero.com/api/bazardor/products')
       .then((res) => res.json())
@@ -78,13 +78,13 @@ export default function Home() {
 
   const sortedProducts = getSortedProducts();
 
-  // টপ ৬ দাম বেড়েছে (up) পণ্য ফিল্টার ও সর্ট করা
+  // টপ ৬ দাম বেড়েছে
   const topIncreased = [...allProducts]
     .filter((item) => item.change?.dir === 'up')
     .sort((a, b) => (b.change?.pct || 0) - (a.change?.pct || 0))
     .slice(0, 6);
 
-  // টপ ৬ দাম কমেছে (down) পণ্য ফিল্টার ও সর্ট করা
+  // টপ ৬ দাম কমেছে
   const topDecreased = [...allProducts]
     .filter((item) => item.change?.dir === 'down')
     .sort((a, b) => Math.abs(b.change?.pct || 0) - Math.abs(a.change?.pct || 0))
@@ -109,9 +109,9 @@ export default function Home() {
                   {topIncreased.map((prod, idx) => {
                     const name = prod.nameBn || prod.name || 'পণ্য';
                     const price = prod.today !== undefined ? prod.today : (prod.price || 0);
-                    const unit = prod.unit ? `প্রতি ${prod.unit}` : 'প্রতি kg';
+                    const unit = prod.unit ? `প্রতি ${prod.unit}` : 'প্রতি কেজি';
                     const icon = prod.image || prod.categoryIcon || '🛒';
-                    const pctVal = prod.change?.pct ? Math.abs(prod.change.pct) : 0;
+                    const pctVal = prod.change?.pct !== undefined ? prod.change.pct : 0;
 
                     return (
                       <div
@@ -150,9 +150,9 @@ export default function Home() {
                   {topDecreased.map((prod, idx) => {
                     const name = prod.nameBn || prod.name || 'পণ্য';
                     const price = prod.today !== undefined ? prod.today : (prod.price || 0);
-                    const unit = prod.unit ? `প্রতি ${prod.unit}` : 'প্রতি kg';
+                    const unit = prod.unit ? `প্রতি ${prod.unit}` : 'প্রতি কেজি';
                     const icon = prod.image || prod.categoryIcon || '🛒';
-                    const pctVal = prod.change?.pct ? Math.abs(prod.change.pct) : 0;
+                    const pctVal = prod.change?.pct !== undefined ? Math.abs(prod.change.pct) : 0;
 
                     return (
                       <div
@@ -180,6 +180,60 @@ export default function Home() {
                 </div>
               </div>
             )}
+
+            {/* ৩. সব পণ্য সেকশন */}
+            {allProducts.length > 0 && (
+              <div className="pt-4 border-t border-gray-200">
+                <h2 className="text-lg font-bold text-gray-900 mb-1">সব পণ্য</h2>
+                <p className="text-xs text-gray-500 mb-4">মোট {allProducts.length}টি পণ্য দেখানো হচ্ছে</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {allProducts.map((prod, idx) => {
+                    const name = prod.nameBn || prod.name || 'পণ্য';
+                    const price = prod.today !== undefined ? prod.today : (prod.price || 0);
+                    const unit = prod.unit ? `প্রতি ${prod.unit}` : 'প্রতি কেজি';
+                    const icon = prod.image || prod.categoryIcon || '🛒';
+                    const dir = prod.change?.dir;
+                    const pctVal = prod.change?.pct !== undefined ? prod.change.pct : 0;
+
+                    return (
+                      <div
+                        key={prod.id || idx}
+                        className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center hover:border-emerald-300 transition"
+                      >
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl">{icon}</span>
+                            <h3 className="font-bold text-gray-800">{name}</h3>
+                          </div>
+                          <p className="text-xs text-gray-400 mt-1">{unit}</p>
+
+                          <div className="mt-3">
+                            <span className="text-xs text-gray-400 block">আজকের দাম</span>
+                            <span className="text-lg font-bold text-gray-900">{price} টাকা</span>
+                          </div>
+                        </div>
+
+                        {dir && (
+                          <div
+                            className={`text-xs font-semibold px-2.5 py-1 rounded-md flex items-center gap-1 ${
+                              dir === 'up'
+                                ? 'text-red-600 bg-red-50'
+                                : dir === 'down'
+                                ? 'text-emerald-600 bg-emerald-50'
+                                : 'text-gray-500 bg-gray-50'
+                            }`}
+                          >
+                            {dir === 'up' && `▲ ${pctVal}%`}
+                            {dir === 'down' && `▼ ${Math.abs(pctVal)}%`}
+                            {dir === 'flat' && `— 0.0%`}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <>
@@ -199,7 +253,7 @@ export default function Home() {
               </p>
 
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500">সাজান</span>
+                <span className="text-sm text-gray-500">সাজان</span>
                 <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value)}
@@ -225,10 +279,10 @@ export default function Home() {
                 {sortedProducts.map((prod, idx) => {
                   const name = prod.nameBn || prod.name || 'পণ্য';
                   const price = prod.today !== undefined ? prod.today : (prod.price || 0);
-                  const unit = prod.unit ? `প্রতি ${prod.unit}` : 'প্রতি kg';
+                  const unit = prod.unit ? `প্রতি ${prod.unit}` : 'প্রতি কেজি';
                   const icon = prod.image || prod.categoryIcon || catIcon;
                   const dir = prod.change?.dir;
-                  const pctVal = prod.change?.pct ? Math.abs(prod.change.pct) : 0;
+                  const pctVal = prod.change?.pct !== undefined ? prod.change.pct : 0;
 
                   return (
                     <div
@@ -242,7 +296,7 @@ export default function Home() {
                         </div>
                         <p className="text-xs text-gray-400 mt-1">{unit}</p>
 
-                        <div className="np-3 mt-3">
+                        <div className="mt-3">
                           <span className="text-xs text-gray-400 block">আজকের দাম</span>
                           <span className="text-lg font-bold text-gray-900">{price} টাকা</span>
                         </div>
@@ -258,10 +312,9 @@ export default function Home() {
                               : 'text-gray-500 bg-gray-50'
                           }`}
                         >
-                          {dir === 'up' && '▲'}
-                          {dir === 'down' && '▼'}
-                          {dir === 'flat' && '—'}
-                          {pctVal}%
+                          {dir === 'up' && `▲ ${pctVal}%`}
+                          {dir === 'down' && `▼ ${Math.abs(pctVal)}%`}
+                          {dir === 'flat' && `— 0.0%`}
                         </div>
                       )}
                     </div>
