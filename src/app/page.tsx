@@ -63,14 +63,12 @@ export default function Home() {
       });
   }, [activeCat]);
 
-  const handleProductClick = (productId: number | string) => {
+ const handleProductClick = (productId: number | string) => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
 
     if (isLoggedIn === 'true') {
       router.push(`/product/${productId}`);
     } else {
-      // product id ta store kore rakhchi jate signin sesh e ekhane fire asa jay
-      localStorage.setItem('redirectProductId', String(productId));
       router.push('/signin');
     }
   };
@@ -105,11 +103,14 @@ export default function Home() {
     .sort((a, b) => Math.abs(b.change?.pct || 0) - Math.abs(a.change?.pct || 0))
     .slice(0, 6);
 
-  return (
+ return (
     <main className="min-h-screen bg-gray-100 pb-16">
-      <Navbar />
-      <CatagoriesNav activeCat={activeCat} onSelectCategory={handleSelectCategory} />
-      <PriceTicker />
+      {/* Sticky Container for Navbar, Categories & Ticker */}
+      <div className="sticky top-0 z-40 bg-gray-100 shadow-sm">
+        <Navbar />
+        <CatagoriesNav activeCat={activeCat} onSelectCategory={handleSelectCategory} />
+        <PriceTicker />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         {!activeCat ? (

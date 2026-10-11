@@ -26,11 +26,19 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="w-full bg-white border-b border-gray-200 py-3.5 px-6 shadow-sm">
+    <nav className="w-full bg-white border-b border-gray-200 py-4 px-6 shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        {/* Logo / Title */}
-        <Link href="/" className="flex items-center gap-2 text-xl font-bold text-gray-900">
-          <span>🛒</span> বাজার দর
+        {/* Logo, Green Box Icon & Date */}
+        <Link href="/" className="flex items-center gap-3">
+          <div className="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-2xl shadow-md">
+            🛒
+          </div>
+          <div>
+            <span className="text-2xl font-bold text-gray-900 tracking-tight block">বাজার দর</span>
+            <span className="text-xs text-gray-500 font-medium">
+  {new Intl.DateTimeFormat('bn-BD', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date())}
+</span>
+          </div>
         </Link>
 
         {/* Auth Buttons or User Info */}
@@ -42,7 +50,7 @@ export default function Navbar() {
               </span>
               <button
                 onClick={handleLogout}
-                className="text-xs font-medium bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg transition border border-red-200"
+                className="text-xs font-medium bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg transition border border-red-200 cursor-pointer"
               >
                 লগআউট
               </button>

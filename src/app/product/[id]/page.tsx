@@ -108,13 +108,22 @@ export default function ProductDetailPage() {
       <PriceTicker />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-        {/* Breadcrumb */}
-        <div className="text-xs text-gray-500 mb-4 flex items-center gap-1.5 font-medium">
-          <Link href="/" className="hover:text-emerald-700">হোম</Link>
-          <span>›</span>
-          <span className="text-gray-600">{catName}</span>
-          <span>›</span>
-          <span className="text-gray-900 font-semibold">{name}</span>
+        {/* Back Button & Breadcrumb */}
+        <div className="mb-4 flex items-center justify-between">
+          <button
+            onClick={() => router.push('/')}
+            className="text-xs font-semibold bg-white border border-gray-200 text-gray-700 hover:text-emerald-700 px-3 py-1.5 rounded-lg shadow-sm transition flex items-center gap-1"
+          >
+            ← হোম পেজে ফিরে যান
+          </button>
+          
+          <div className="text-xs text-gray-500 flex items-center gap-1.5 font-medium">
+            <Link href="/" className="hover:text-emerald-700">হোম</Link>
+            <span>›</span>
+            <span className="text-gray-600">{catName}</span>
+            <span>›</span>
+            <span className="text-gray-900 font-semibold">{name}</span>
+          </div>
         </div>
 
         {/* Product Main Info Card */}
