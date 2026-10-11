@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+#  Bazar Dor (বাজার দর)
 
-## Getting Started
+A modern, responsive web application built to track and display real-time essential commodity market prices in Bangladesh. Designed with a clean UI, sticky navigation, and seamless user experience.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+##  Short Description
+*Bazar Dor* is a comprehensive price-tracking web platform that helps users monitor daily market rates of essential groceries, vegetables, rice, oil, and other daily commodities across different markets and divisions in Bangladesh. It provides transparent price summaries, minimum-maximum price fluctuations, and trend analysis at a glance.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+##  Key Features (5 Core Features)
 
-To learn more about Next.js, take a look at the following resources:
+1. *Live Price Ticker & Dynamic Header:* 
+   - Real-time scrolling price ticker showcasing commodity rate changes and market trends.
+   - Includes dynamic Bengali current date and professional brand identity.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. *Sticky Responsive Navigation & Categories:* 
+   - Sticky top layout wrapping the Navbar, Category Navigation, and Price Ticker so they stay accessible while scrolling.
+   - Instant filtering through categorized commodity items.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. *Detailed Market-wise Price Breakdown:* 
+   - Dedicated product detail view (/product/[id]) showing minimum, maximum, and average prices across various local markets and divisions.
 
-## Deploy on Vercel
+4. *Authentication & Session Management:* 
+   - Secure Sign-In and Sign-Up flows with localStorage state management and instant react-hot-toast feedback notifications.
+   - Smart session protection preventing unauthorized access to product pages.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. *Responsive Modern UI & Clean Footer:* 
+   - Built using Tailwind CSS with mobile-friendly layouts, clean card structures, and a well-spaced disclaimer footer.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+##  Technologies Used
+
+- *Framework:* [Next.js](https://nextjs.org/) (App Router)
+- *Library:* [React](https://react.dev/) (Client & Server Components)
+- *Styling:* [Tailwind CSS](https://tailwindcss.com/)
+- *Language:* TypeScript / JavaScript (ES6+)
+- *Notifications:* react-hot-toast
+- *Version Control:* Git & GitHub
+- *Deployment:* Vercel / Netlify
+  
